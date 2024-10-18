@@ -1,5 +1,5 @@
 
-# Rule Engine Application
+Application-1
 
 ## Overview
 
@@ -20,39 +20,7 @@ The frontend is built using React, and the backend is powered by Node.js with Ex
 - **AST Parsing:** Custom rule parsing logic (implemented in `astUtils.js`)
 - **Styling:** Custom CSS
 
-## Directory Structure
 
-```
-my-app/
-│
-├── backend/
-│   ├── controllers/
-│   │   └── ruleController.js  # Handles rule creation, combination, and evaluation logic
-│   ├── routes/
-│   │   └── ruleRoutes.js      # API routes for rule operations
-│   └── server.js              # Main server file
-│
-├── src/
-│   ├── components/
-│   │   └── RuleForm.js        # React component for rule form
-│   ├── services/
-│   │   └── api.js             # API calls to backend
-│   └── App.js                 # Main React App component
-│
-├── public/
-│   └── index.html             # Entry point for React
-│
-└── package.json               # Project dependencies and scripts
-```
-
-## Installation and Setup
-
-### Prerequisites
-
-- **Node.js** (v14 or higher)
-- **npm** or **yarn**
-- **MongoDB** (if you have a database for storing rules, though it's optional in this case)
-  
 ### Backend Setup
 
 1. **Clone the Repository**:
@@ -93,42 +61,6 @@ my-app/
 
    The frontend will run on `http://localhost:3000`.
 
-### Testing with Postman
-
-To test the APIs via Postman:
-
-- **Create Rule**: 
-  - Endpoint: `POST http://localhost:5000/api/rules/create`
-  - Body (JSON):
-    ```json
-    {
-      "rule": "(age > 30 AND department = 'Sales')"
-    }
-    ```
-
-- **Combine Rules**: 
-  - Endpoint: `POST http://localhost:5000/api/rules/combine`
-  - Body (JSON):
-    ```json
-    {
-      "rules": ["(age > 30)", "(department = 'Sales')"]
-    }
-    ```
-
-- **Evaluate Rule**: 
-  - Endpoint: `POST http://localhost:5000/api/rules/evaluate`
-  - Body (JSON):
-    ```json
-    {
-      "ast": { /* Combined AST from the combine rules */ },
-      "data": {
-        "age": 35,
-        "department": "Sales",
-        "salary": 60000,
-        "experience": 3
-      }
-    }
-    ```
 
 ## Usage
 
