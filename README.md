@@ -1,70 +1,143 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Rule Engine Application
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+This project implements a rule engine with a 3-tier architecture where users can create rules, combine them, and evaluate JSON data against the rules. The rule engine uses Abstract Syntax Tree (AST) for parsing and manipulating rules, allowing dynamic rule creation, modification, and combination.
 
-### `npm start`
+The frontend is built using React, and the backend is powered by Node.js with Express. The backend handles rule creation, combination, and evaluation, while the frontend allows users to interact with these functionalities through a form interface.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Create Rule:** Allows users to input rule strings and generates an Abstract Syntax Tree (AST) for the rule.
+- **Combine Rules:** Allows users to combine multiple rules into a single AST.
+- **Evaluate Rule:** Takes a JSON input with user data and evaluates the combined rule against it, returning whether the rule passes or fails.
 
-### `npm test`
+## Tech Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Frontend:** React, Axios
+- **Backend:** Node.js, Express
+- **AST Parsing:** Custom rule parsing logic (implemented in `astUtils.js`)
+- **Styling:** Custom CSS
 
-### `npm run build`
+## Directory Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+my-app/
+│
+├── backend/
+│   ├── controllers/
+│   │   └── ruleController.js  # Handles rule creation, combination, and evaluation logic
+│   ├── routes/
+│   │   └── ruleRoutes.js      # API routes for rule operations
+│   └── server.js              # Main server file
+│
+├── src/
+│   ├── components/
+│   │   └── RuleForm.js        # React component for rule form
+│   ├── services/
+│   │   └── api.js             # API calls to backend
+│   └── App.js                 # Main React App component
+│
+├── public/
+│   └── index.html             # Entry point for React
+│
+└── package.json               # Project dependencies and scripts
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Installation and Setup
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
 
-### `npm run eject`
+- **Node.js** (v14 or higher)
+- **npm** or **yarn**
+- **MongoDB** (if you have a database for storing rules, though it's optional in this case)
+  
+### Backend Setup
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/saivarunpuri/application1.git
+   cd my-app
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+2. **Install Backend Dependencies**:
+   ```bash
+   cd backend
+   npm install
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+3. **Start the Backend Server**:
+   ```bash
+   node server.js
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+   The backend will run on `http://localhost:5000`.
 
-## Learn More
+### Frontend Setup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Navigate to the Frontend**:
+   ```bash
+   cd ../
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Install Frontend Dependencies**:
+   ```bash
+   npm install
+   ```
 
-### Code Splitting
+3. **Start the Frontend**:
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   The frontend will run on `http://localhost:3000`.
 
-### Analyzing the Bundle Size
+### Testing with Postman
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To test the APIs via Postman:
 
-### Making a Progressive Web App
+- **Create Rule**: 
+  - Endpoint: `POST http://localhost:5000/api/rules/create`
+  - Body (JSON):
+    ```json
+    {
+      "rule": "(age > 30 AND department = 'Sales')"
+    }
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Combine Rules**: 
+  - Endpoint: `POST http://localhost:5000/api/rules/combine`
+  - Body (JSON):
+    ```json
+    {
+      "rules": ["(age > 30)", "(department = 'Sales')"]
+    }
+    ```
 
-### Advanced Configuration
+- **Evaluate Rule**: 
+  - Endpoint: `POST http://localhost:5000/api/rules/evaluate`
+  - Body (JSON):
+    ```json
+    {
+      "ast": { /* Combined AST from the combine rules */ },
+      "data": {
+        "age": 35,
+        "department": "Sales",
+        "salary": 60000,
+        "experience": 3
+      }
+    }
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Usage
 
-### Deployment
+1. **Create a Rule**:
+   - Enter a rule string in the "Create Rule" form and click "Create Rule". The rule's AST will be displayed.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+2. **Combine Rules**:
+   - Enter multiple rules (comma-separated) and click "Combine Rules". The combined AST will be displayed.
 
-### `npm run build` fails to minify
+3. **Evaluate Rule**:
+   - Enter a JSON object with attributes (e.g., `{"age": 35, "department": "Sales"}`) in the "Evaluate Rule" form, and the evaluation result (True/False) will be shown based on whether the rule passes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
